@@ -10,6 +10,8 @@ const productRoutes = require('./routes/productRoutes');
 const invoiceRoutes = require('./routes/invoiceRoutes');
 const clientPortalRoutes = require('./routes/clientPortalRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
+const pool = require('./config/db');
+
 
 const app = express();
 
