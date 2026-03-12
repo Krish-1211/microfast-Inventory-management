@@ -75,9 +75,17 @@ const Login = () => {
                         />
                     </div>
                     {error && <p className="text-sm text-danger">{error}</p>}
+                    {!navigator.onLine && (
+                        <div className="bg-amber-500/10 border border-amber-500/30 rounded-md p-3">
+                            <p className="text-[10px] text-amber-500 font-bold uppercase tracking-wider mb-1">📵 Offline Mode</p>
+                            <p className="text-xs text-muted-foreground leading-relaxed">
+                                You can log in using your last used credentials while offline.
+                            </p>
+                        </div>
+                    )}
                     <Button type="submit" className="w-full" disabled={isLoading}>
                         {isLoading && <Loader2 className="w-4 h-4 mr-2 animate-spin" />}
-                        Sign In
+                        {navigator.onLine ? "Sign In" : "Login Offline"}
                     </Button>
                 </form>
             </div>

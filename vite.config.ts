@@ -52,10 +52,11 @@ export default defineConfig(({ mode }) => ({
       workbox: {
         // Cache all app assets
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2,woff,ttf}"],
+        navigateFallback: "index.html",
         runtimeCaching: [
           {
             // Cache API responses for offline access
-            urlPattern: /^http:\/\/localhost:5002\/.*/i,
+            urlPattern: ({ url }) => url.pathname.startsWith('/api'),
             handler: "NetworkFirst",
             options: {
               cacheName: "api-cache",
