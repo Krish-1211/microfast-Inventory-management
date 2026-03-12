@@ -43,6 +43,22 @@ app.use('/my-invoices', clientPortalRoutes);
 app.use('/dashboard', dashboardRoutes);
 
 
+app.get('/api/health', async (req, res) => {
+    try {
+        await pool.query('SELECT 1');
+        res.json({ status: 'ok', database: 'connected' });
+    } catch (err) {
+        res.status(500).json({ 
+            status: 'error', 
+            message: err.message,
+            env_check: {
+                has_db_url: !!(process.env.DATABASE_URL || process.env.database_URL),
+                node_env: process.env.NODE_ENV
+            }
+        });
+    }
+});
+
 app.get('/', (req, res) => {
     res.send('API is running...');
 });
