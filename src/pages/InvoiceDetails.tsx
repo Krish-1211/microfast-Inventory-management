@@ -7,6 +7,7 @@ import { useInvoice, useDeleteInvoice } from "@/hooks/useData";
 import { generateInvoicePdf } from "@/lib/pdfUtils";
 import { toast } from "sonner";
 import { Skeleton } from "@/components/ui/skeleton";
+import { formatTZS } from "@/lib/currency";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -128,8 +129,8 @@ const InvoiceDetails: React.FC = () => {
                                     <tr key={idx} className="hover:bg-muted/5 transition-colors">
                                         <td className="p-4 font-medium">{item.product_name}</td>
                                         <td className="p-4 text-center">{item.quantity}</td>
-                                        <td className="p-4 text-right">${parseFloat(item.price).toFixed(2)}</td>
-                                        <td className="p-4 text-right font-semibold">${(item.quantity * parseFloat(item.price)).toFixed(2)}</td>
+                                        <td className="p-4 text-right">{formatTZS(parseFloat(item.price))}</td>
+                                        <td className="p-4 text-right font-semibold">{formatTZS(item.quantity * parseFloat(item.price))}</td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -139,17 +140,17 @@ const InvoiceDetails: React.FC = () => {
                             <div className="ml-auto max-w-xs space-y-3">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">Subtotal</span>
-                                    <span className="font-medium">${subtotal.toFixed(2)}</span>
+                                    <span className="font-medium">{formatTZS(subtotal)}</span>
                                 </div>
                                 {taxes.map((t: any, idx: number) => (
                                     <div key={idx} className="flex justify-between text-sm">
                                         <span className="text-muted-foreground">{t.name} ({t.rate}%)</span>
-                                        <span className="font-medium">${(subtotal * (t.rate / 100)).toFixed(2)}</span>
+                                        <span className="font-medium">{formatTZS(subtotal * (t.rate / 100))}</span>
                                     </div>
                                 ))}
                                 <div className="flex justify-between items-center pt-3 border-t border-border">
-                                    <span className="font-bold text-base">Total Total</span>
-                                    <span className="text-2xl font-black text-primary">${parseFloat(invoice.total_amount).toFixed(2)}</span>
+                                    <span className="font-bold text-base">Total</span>
+                                    <span className="text-2xl font-black text-primary">{formatTZS(parseFloat(invoice.total_amount))}</span>
                                 </div>
                             </div>
                         </div>

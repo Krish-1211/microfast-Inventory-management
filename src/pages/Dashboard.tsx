@@ -1,9 +1,10 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import {
-  Package, Users, FileText, DollarSign,
-  Plus, ArrowRight, TrendingUp, Clock,
+  Package, Users, FileText, TrendingUp,
+  Plus, ArrowRight, Clock, Banknote,
 } from "lucide-react";
+import { formatTZS } from "@/lib/currency";
 import { Button } from "@/components/ui/button";
 import StatusBadge from "@/components/StatusBadge";
 import { useStats, useInvoices } from "@/hooks/useData";
@@ -77,9 +78,9 @@ const Dashboard: React.FC = () => {
         <StatCard title="Total Invoices" value={stats.totalInvoices} icon={FileText} sub="All time" />
         <StatCard
           title="Total Revenue"
-          value={`$${stats.revenue.toFixed(2)}`}
-          icon={DollarSign}
-          sub={`$${stats.pending.toFixed(2)} pending`}
+          value={formatTZS(stats.revenue)}
+          icon={Banknote}
+          sub={`${formatTZS(stats.pending)} pending`}
           accent
         />
       </div>
@@ -115,7 +116,7 @@ const Dashboard: React.FC = () => {
                   >
                     <td className="font-medium text-primary group-hover:underline">{inv.invoiceNumber}</td>
                     <td className="text-muted-foreground">{inv.clientName}</td>
-                    <td className="font-medium">${inv.amount.toFixed(2)}</td>
+                    <td className="font-medium">{formatTZS(inv.amount)}</td>
                     <td><StatusBadge status={inv.status} /></td>
                   </tr>
                 ))}

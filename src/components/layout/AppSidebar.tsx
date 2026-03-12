@@ -1,11 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import {
   LayoutDashboard,
   Package,
   Users,
   FileText,
-  Settings,
   ChevronLeft,
   ChevronRight,
   ShoppingCart,
@@ -14,8 +13,11 @@ import {
   FileStack,
   Truck,
   ShoppingBag,
+  Download,
+  CheckCircle2,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+
 const adminNav = [
   { label: "Dashboard", icon: LayoutDashboard, to: "/dashboard" },
   { label: "Products", icon: Package, to: "/products" },
@@ -26,7 +28,6 @@ const adminNav = [
   { label: "Proforma Invoice", icon: FileStack, to: "/proforma-invoice" },
   { label: "Delivery Note", icon: Truck, to: "/delivery-note" },
   { label: "Purchase Order", icon: ShoppingBag, to: "/purchase-order" },
-  { label: "Settings", icon: Settings, to: "/settings" },
 ];
 
 import {
@@ -42,8 +43,66 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
+const InstallSidebarButton: React.FC = () => {
+  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
+  const [installed, setInstalled] = useState(false);
+  const { state } = useSidebar();
+  const collapsed = state === "collapsed";
+
+  useEffect(() => {
+    // Check if already installed (standalone mode)
+    const isStandalone =
+      window.matchMedia("(display-mode: standalone)").matches ||
+      (window.navigator as any).standalone === true;
+
+    if (isStandalone) {
+      setInstalled(true);
+      return;
+    }
+
+    const handler = (e: Event) => {
+      e.preventDefault();
+      setDeferredPrompt(e);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+
+    // Listen for install completion
+    window.addEventListener("appinstalled", () => {
+      setInstalled(true);
+      setDeferredPrompt(null);
+    });
+
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  // Hide if already installed
+  if (installed) return null;
+
+  const handleInstall = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === "accepted") setInstalled(true);
+    setDeferredPrompt(null);
+  };
+
+  // If no prompt yet, still show the button (some browsers show on click)
+  return (
+    <SidebarMenuItem>
+      <SidebarMenuButton
+        onClick={handleInstall}
+        tooltip="Install App"
+        className="text-primary hover:bg-primary/10 border border-primary/20"
+      >
+        <Download className="w-4 h-4" />
+        <span>Install App</span>
+      </SidebarMenuButton>
+    </SidebarMenuItem>
+  );
+};
+
 const AppSidebar: React.FC = () => {
-  const { state, isMobile } = useSidebar();
+  const { state } = useSidebar();
   const collapsed = state === "collapsed";
   const location = useLocation();
 
@@ -110,8 +169,11 @@ const AppSidebar: React.FC = () => {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="p-2 border-t border-sidebar-border">
+      <SidebarFooter className="p-2 border-t border-sidebar-border space-y-1">
         <SidebarMenu>
+          {/* Install App button — vanishes when installed */}
+          <InstallSidebarButton />
+
           <SidebarMenuItem>
             <SidebarMenuButton asChild tooltip="Back to Store">
               <NavLink to="/">

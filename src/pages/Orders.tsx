@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Search, Download, SlidersHorizontal, PackageOpen, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import { formatTZS } from "@/lib/currency";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import StatusBadge from "@/components/StatusBadge";
 import { toast } from "sonner";
@@ -115,7 +116,7 @@ const Orders: React.FC = () => {
                                     <td className="text-foreground">{order.clientName}</td>
                                     <td className="text-muted-foreground">{new Date(order.date).toLocaleDateString()}</td>
                                     <td className="text-muted-foreground">{order.dueDate ? new Date(order.dueDate).toLocaleDateString() : '-'}</td>
-                                    <td className="font-semibold">${order.amount.toFixed(2)}</td>
+                                    <td className="font-semibold">{formatTZS(order.amount)}</td>
                                     <td><StatusBadge status={order.status} /></td>
                                     <td className="text-right">
                                         <div className="flex justify-end gap-1" onClick={(e) => e.stopPropagation()}>

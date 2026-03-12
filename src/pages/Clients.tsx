@@ -11,6 +11,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import StatusBadge from "@/components/StatusBadge";
 import { useClients, useCreateClient, useUpdateClient, useDeleteClient, useClientInvoices } from "@/hooks/useData";
 import { format } from "date-fns";
+import { formatTZS } from "@/lib/currency";
 
 const emptyClient: any = {
   name: "", email: "", phone: "", company: "", status: "active", tin: "", vrn: ""
@@ -79,7 +80,7 @@ const ClientInvoicePanel: React.FC<{ clientId: string }> = ({ clientId }) => {
                   </div>
                   <div className="flex items-center gap-2 shrink-0">
                     <span className="text-sm font-bold text-primary">
-                      ${parseFloat(inv.total_amount || 0).toFixed(2)}
+                      {formatTZS(parseFloat(inv.total_amount || 0))}
                     </span>
                     <ExternalLink className="w-3.5 h-3.5 text-muted-foreground group-hover:text-primary transition-colors" />
                   </div>
@@ -123,7 +124,7 @@ const ClientInvoicePanel: React.FC<{ clientId: string }> = ({ clientId }) => {
           </div>
         </div>
       </td>
-    </tr>
+    </tr >
   );
 };
 

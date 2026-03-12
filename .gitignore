@@ -29,3 +29,4 @@ coverage/
 
 # Vite cache
 .vite/
+.vercel

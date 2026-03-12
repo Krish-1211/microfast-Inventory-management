@@ -3,6 +3,7 @@ import { Plus, Search, Pencil, Trash2, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { formatTZS } from "@/lib/currency";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import StatusBadge from "@/components/StatusBadge";
 import { useProducts, useCreateProduct, useUpdateProduct, useDeleteProduct } from "@/hooks/useData";
@@ -109,7 +110,7 @@ const Products: React.FC = () => {
                     </div>
                   </td>
                   <td className="text-muted-foreground">{p.category}</td>
-                  <td className="font-medium">${p.price.toFixed(2)}</td>
+                  <td className="font-medium">{formatTZS(p.price)}</td>
                   <td>{p.stock}</td>
                   <td><StatusBadge status={p.status} /></td>
                   <td>
@@ -144,7 +145,7 @@ const Products: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <Label>Price ($)</Label>
+                  <Label>Price (TZS)</Label>
                   <Input className="mt-1.5" type="number" min={0} value={form.price} onChange={e => setForm(f => ({ ...f, price: parseFloat(e.target.value) || 0 }))} />
                 </div>
                 <div>

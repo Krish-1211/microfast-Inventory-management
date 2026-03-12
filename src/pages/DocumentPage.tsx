@@ -9,6 +9,7 @@ import { useClients, useProducts } from "@/hooks/useData";
 import { generateInvoicePdf } from "@/lib/pdfUtils";
 import { toast } from "sonner";
 import { format } from "date-fns";
+import { formatTZS } from "@/lib/currency";
 
 interface LineItem {
     id: string;
@@ -249,7 +250,7 @@ const DocumentPage: React.FC<DocumentPageProps> = ({ documentType, icon, descrip
                                                 />
                                             </td>
                                             <td className="p-3 text-right font-medium">
-                                                ${(item.quantity * item.unitPrice).toFixed(2)}
+                                                {formatTZS(item.quantity * item.unitPrice)}
                                             </td>
                                             <td className="p-3">
                                                 <Button
@@ -272,15 +273,15 @@ const DocumentPage: React.FC<DocumentPageProps> = ({ documentType, icon, descrip
                             <div className="ml-auto max-w-xs space-y-2">
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">Subtotal</span>
-                                    <span className="font-medium">${subtotal.toFixed(2)}</span>
+                                    <span className="font-medium">{formatTZS(subtotal)}</span>
                                 </div>
                                 <div className="flex justify-between text-sm">
                                     <span className="text-muted-foreground">VAT (18%)</span>
-                                    <span className="font-medium">{exempt ? "Exempt" : `$${vat.toFixed(2)}`}</span>
+                                    <span className="font-medium">{exempt ? "Exempt" : formatTZS(vat)}</span>
                                 </div>
                                 <div className="flex justify-between items-center pt-2 border-t border-border">
                                     <span className="font-bold">Total</span>
-                                    <span className="text-xl font-black text-primary">${grandTotal.toFixed(2)}</span>
+                                    <span className="text-xl font-black text-primary">{formatTZS(grandTotal)}</span>
                                 </div>
                             </div>
                         </div>

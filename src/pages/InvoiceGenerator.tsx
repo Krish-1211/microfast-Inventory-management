@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { useClients, useProducts, useCreateInvoice, useInvoice, useUpdateInvoice } from "@/hooks/useData";
 import ProductRecommendations from "@/components/ProductRecommendations";
 import { toast } from "sonner";
+import { formatTZS } from "@/lib/currency";
 
 interface LineItem {
   id: string;
@@ -268,7 +269,7 @@ const InvoiceGenerator: React.FC = () => {
                     </td>
                     <td>
                       <div className="flex items-center gap-1 text-muted-foreground">
-                        <span className="text-xs">$</span>
+                        <span className="text-xs">TZS</span>
                         <Input
                           type="number" min={0} value={item.unitPrice}
                           onChange={e => updateItem(item.id, "unitPrice", parseFloat(e.target.value) || 0)}
@@ -276,7 +277,7 @@ const InvoiceGenerator: React.FC = () => {
                         />
                       </div>
                     </td>
-                    <td className="font-medium text-right">${(item.quantity * item.unitPrice).toFixed(2)}</td>
+                    <td className="font-medium text-right">{formatTZS(item.quantity * item.unitPrice)}</td>
                     <td className="text-center">
                       <button
                         onClick={() => removeItem(item.id)}
@@ -297,7 +298,7 @@ const InvoiceGenerator: React.FC = () => {
             <div className="ml-auto max-w-xs space-y-2 text-sm">
               <div className="flex justify-between text-muted-foreground pb-2">
                 <span>Subtotal</span>
-                <span>${subtotal.toFixed(2)}</span>
+                <span>{formatTZS(subtotal)}</span>
               </div>
 
               {taxes.map(tax => (
@@ -320,7 +321,7 @@ const InvoiceGenerator: React.FC = () => {
                     </div>
                   </div>
                   <div className="flex flex-row items-center gap-2">
-                    <span>${(subtotal * (tax.rate / 100)).toFixed(2)}</span>
+                    <span>{formatTZS(subtotal * (tax.rate / 100))}</span>
                     <button onClick={() => removeTax(tax.id)} className="text-muted-foreground hover:text-danger ml-2">
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
@@ -336,7 +337,7 @@ const InvoiceGenerator: React.FC = () => {
 
               <div className="flex justify-between font-semibold text-foreground border-t border-border mt-2 pt-2">
                 <span>Total</span>
-                <span className="text-primary">${total.toFixed(2)}</span>
+                <span className="text-primary">{formatTZS(total)}</span>
               </div>
             </div>
           </div>

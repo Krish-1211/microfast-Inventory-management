@@ -8,6 +8,7 @@ import StatusBadge from "@/components/StatusBadge";
 import { toast } from "sonner";
 import { useInvoices, fetchInvoiceById } from "@/hooks/useData";
 import { generateInvoicePdf } from "@/lib/pdfUtils";
+import { formatTZS } from "@/lib/currency";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -75,7 +76,7 @@ const InvoiceHistory: React.FC = () => {
             >
               <p className="text-[10px] sm:text-xs text-muted-foreground font-medium">{s === "All" ? "All Invoices" : s}</p>
               <p className="text-base sm:text-lg font-semibold mt-0.5">{count}</p>
-              <p className="text-[10px] sm:text-xs text-muted-foreground">${amount.toFixed(2)}</p>
+              <p className="text-[10px] sm:text-xs text-muted-foreground">{formatTZS(amount)}</p>
             </button>
           );
         })}
@@ -134,7 +135,7 @@ const InvoiceHistory: React.FC = () => {
                   <td className="text-foreground">{inv.clientName}</td>
                   <td className="text-muted-foreground">{new Date(inv.date).toLocaleDateString()}</td>
                   <td className="text-muted-foreground">{inv.dueDate ? new Date(inv.dueDate).toLocaleDateString() : '-'}</td>
-                  <td className="font-semibold">${inv.amount.toFixed(2)}</td>
+                  <td className="font-semibold">{formatTZS(inv.amount)}</td>
                   <td><StatusBadge status={inv.status} /></td>
                   <td className="text-right">
                     <div className="flex justify-end gap-1" onClick={(e) => e.stopPropagation()}>

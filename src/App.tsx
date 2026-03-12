@@ -13,7 +13,6 @@ import InvoiceGenerator from "./pages/InvoiceGenerator";
 import InvoiceHistory from "./pages/InvoiceHistory";
 import InvoiceDetails from "./pages/InvoiceDetails";
 import Orders from "./pages/Orders";
-import SettingsPage from "./pages/SettingsPage";
 import NotFound from "./pages/NotFound";
 import Login from "./pages/Login";
 import PublicStore from "./pages/PublicStore";
@@ -50,7 +49,6 @@ const App = () => {
               <Route path="/proforma-invoice" element={<ProformaInvoice />} />
               <Route path="/delivery-note" element={<DeliveryNote />} />
               <Route path="/purchase-order" element={<PurchaseOrder />} />
-              <Route path="/settings" element={<SettingsPage />} />
             </Route>
 
             {/* Home / Landing page */}
