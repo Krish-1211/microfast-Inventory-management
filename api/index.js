@@ -12,7 +12,6 @@ const clientPortalRoutes = require('./routes/clientPortalRoutes');
 const dashboardRoutes = require('./routes/dashboardRoutes');
 const pool = require('./config/db');
 
-
 const app = express();
 
 app.use(cors()); // Allow all origins in production for easier deployment
@@ -46,9 +45,8 @@ app.use('/dashboard', dashboardRoutes);
 
 
 app.get('/api/health', async (req, res) => {
-    const dbPool = require('./config/db');
     try {
-        await dbPool.query('SELECT 1');
+        await pool.query('SELECT 1');
         res.json({ status: 'ok', database: 'connected' });
     } catch (err) {
         res.status(500).json({ 
