@@ -46,8 +46,9 @@ app.use('/dashboard', dashboardRoutes);
 
 
 app.get('/api/health', async (req, res) => {
+    const dbPool = require('./config/db');
     try {
-        await pool.query('SELECT 1');
+        await dbPool.query('SELECT 1');
         res.json({ status: 'ok', database: 'connected' });
     } catch (err) {
         res.status(500).json({ 
