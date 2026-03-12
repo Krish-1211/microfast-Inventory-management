@@ -30,3 +30,6 @@ coverage/
 # Vite cache
 .vite/
 .vercel
+
+.DS_Store
+._*
