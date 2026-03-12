@@ -3,11 +3,18 @@ import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { login } from "@/lib/auth";
+import { login, isAuthenticated } from "@/lib/auth";
 import { Loader2 } from "lucide-react";
 
 const Login = () => {
     const navigate = useNavigate();
+    
+    React.useEffect(() => {
+        if (isAuthenticated()) {
+            navigate("/dashboard");
+        }
+    }, [navigate]);
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);

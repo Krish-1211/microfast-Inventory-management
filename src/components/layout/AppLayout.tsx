@@ -1,11 +1,15 @@
 import React from "react";
-import { Outlet } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import AppSidebar from "./AppSidebar";
 import SyncStatusBar from "@/components/SyncStatusBar";
 import InstallPWA from "@/components/InstallPWA";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
+import { isAuthenticated } from "@/lib/auth";
 
 const AppLayout: React.FC = () => {
+  if (!isAuthenticated()) {
+    return <Navigate to="/login" replace />;
+  }
   return (
     <SidebarProvider>
       <div className="flex min-h-screen w-full bg-background">
