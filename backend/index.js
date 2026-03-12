@@ -23,13 +23,25 @@ app.use((req, res, next) => {
 });
 
 
-// Routes
+// Routes with /api prefix
+const router = express.Router();
+router.use('/auth', authRoutes);
+router.use('/clients', clientRoutes);
+router.use('/products', productRoutes);
+router.use('/invoices', invoiceRoutes);
+router.use('/my-invoices', clientPortalRoutes);
+router.use('/dashboard', dashboardRoutes);
+
+app.use('/api', router);
+
+// Keep root routes for backward compatibility or testing
 app.use('/auth', authRoutes);
 app.use('/clients', clientRoutes);
 app.use('/products', productRoutes);
 app.use('/invoices', invoiceRoutes);
 app.use('/my-invoices', clientPortalRoutes);
 app.use('/dashboard', dashboardRoutes);
+
 
 app.get('/', (req, res) => {
     res.send('API is running...');
@@ -47,6 +59,11 @@ app.use((err, req, res, next) => {
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-    console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
-});
+if (process.env.NODE_ENV !== 'production' || !process.env.VERCEL) {
+    app.listen(PORT, () => {
+        console.log(`Server running in ${process.env.NODE_ENV} mode on port ${PORT}`);
+    });
+}
+
+module.exports = app;
+
