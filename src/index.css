@@ -1,0 +1,152 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Design System — Inventory & Invoice Management SaaS */
+
+@layer base {
+  :root {
+    /* Core surfaces */
+    --background: 210 20% 98%;
+    --foreground: 222 47% 11%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 47% 11%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 47% 11%;
+
+    /* Brand — Teal */
+    --primary: 174 72% 38%;
+    --primary-foreground: 0 0% 100%;
+    --primary-hover: 174 72% 32%;
+    --primary-light: 174 60% 95%;
+
+    /* Secondary — Slate */
+    --secondary: 215 20% 95%;
+    --secondary-foreground: 222 47% 20%;
+
+    /* Muted */
+    --muted: 210 20% 96%;
+    --muted-foreground: 215 16% 52%;
+
+    /* Accent */
+    --accent: 174 60% 95%;
+    --accent-foreground: 174 72% 28%;
+
+    /* Status colors */
+    --success: 142 71% 45%;
+    --success-bg: 142 60% 95%;
+    --warning: 38 92% 50%;
+    --warning-bg: 38 92% 95%;
+    --danger: 0 84% 60%;
+    --danger-bg: 0 84% 96%;
+    --info: 214 84% 56%;
+    --info-bg: 214 84% 96%;
+
+    /* Sidebar */
+    --sidebar: 222 47% 11%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-muted: 215 20% 55%;
+    --sidebar-active-bg: 174 72% 38%;
+    --sidebar-active-fg: 0 0% 100%;
+    --sidebar-hover: 222 40% 18%;
+    --sidebar-border: 222 40% 18%;
+    --sidebar-width: 240px;
+
+    /* UI tokens */
+    --border: 214 20% 90%;
+    --input: 214 20% 90%;
+    --ring: 174 72% 38%;
+    --radius: 0.5rem;
+
+    /* Shadows */
+    --shadow-sm: 0 1px 2px 0 hsl(222 47% 11% / 0.05);
+    --shadow-md: 0 4px 12px 0 hsl(222 47% 11% / 0.08);
+    --shadow-lg: 0 8px 24px 0 hsl(222 47% 11% / 0.1);
+
+    /* Sidebar shadcn compat */
+    --sidebar-background: 222 47% 11%;
+    --sidebar-foreground: 210 20% 90%;
+    --sidebar-primary: 174 72% 38%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 222 40% 18%;
+    --sidebar-accent-foreground: 210 20% 90%;
+    --sidebar-border: 222 40% 18%;
+    --sidebar-ring: 174 72% 38%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    font-feature-settings: 'cv11', 'ss01';
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold tracking-tight;
+  }
+}
+
+@layer components {
+  /* Stat card */
+  .stat-card {
+    @apply bg-card rounded-lg border border-border p-5 shadow-sm;
+  }
+
+  /* Data table */
+  .data-table {
+    @apply w-full text-sm;
+  }
+
+  .data-table th {
+    @apply bg-muted text-muted-foreground font-medium text-xs uppercase tracking-wider px-4 py-3 text-left;
+  }
+
+  .data-table td {
+    @apply px-4 py-3 border-b border-border;
+  }
+
+  .data-table tr:hover td {
+    @apply bg-muted/30;
+  }
+
+  /* Toolbar */
+  .page-toolbar {
+    @apply flex items-center gap-3 mb-5;
+  }
+
+  /* Page header */
+  .page-header {
+    @apply mb-6;
+  }
+
+  .page-title {
+    @apply text-xl font-semibold text-foreground;
+  }
+
+  .page-subtitle {
+    @apply text-sm text-muted-foreground mt-0.5;
+  }
+
+  /* Sidebar nav item */
+  .sidebar-item {
+    @apply flex items-center gap-3 px-3 py-2 rounded-md text-sm font-medium transition-colors cursor-pointer;
+    color: hsl(var(--sidebar-foreground));
+  }
+
+  .sidebar-item:hover {
+    background: hsl(var(--sidebar-hover));
+  }
+
+  .sidebar-item.active {
+    background: hsl(var(--sidebar-active-bg));
+    color: hsl(var(--sidebar-active-fg));
+  }
+}
