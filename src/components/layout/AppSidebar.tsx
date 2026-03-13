@@ -43,58 +43,34 @@ import {
   useSidebar,
 } from "@/components/ui/sidebar";
 
+import { usePWA } from "@/hooks/usePWA";
+
 const InstallSidebarButton: React.FC = () => {
-  const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
-  const [installed, setInstalled] = useState(false);
+  const { deferredPrompt, isInstalled, install } = usePWA();
   const { state } = useSidebar();
   const collapsed = state === "collapsed";
 
-  useEffect(() => {
-    // Check if already installed (standalone mode)
-    const isStandalone =
-      window.matchMedia("(display-mode: standalone)").matches ||
-      (window.navigator as any).standalone === true;
-
-    if (isStandalone) {
-      setInstalled(true);
-      return;
-    }
-
-    const handler = (e: Event) => {
-      e.preventDefault();
-      setDeferredPrompt(e);
-    };
-    window.addEventListener("beforeinstallprompt", handler);
-
-    // Listen for install completion
-    window.addEventListener("appinstalled", () => {
-      setInstalled(true);
-      setDeferredPrompt(null);
-    });
-
-    return () => window.removeEventListener("beforeinstallprompt", handler);
-  }, []);
-
-  // Hide if already installed
-  if (installed) return null;
-
   const handleInstall = async () => {
-    if (!deferredPrompt) return;
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === "accepted") setInstalled(true);
-    setDeferredPrompt(null);
+    await install();
   };
 
-  // If no prompt yet, still show the button (some browsers show on click)
+  // Hide if already installed
+  if (isInstalled) return null;
+
+  // Render the button, but maybe style it as "disabled" or "loading" if prompt not yet available
+  const isReady = !!deferredPrompt;
+
   return (
     <SidebarMenuItem>
       <SidebarMenuButton
         onClick={handleInstall}
-        tooltip="Install App"
-        className="text-primary hover:bg-primary/10 border border-primary/20"
+        tooltip={isReady ? "Install App" : "Preparing Installation..."}
+        className={cn(
+          "text-primary hover:bg-primary/10 border border-primary/20 transition-all",
+          !isReady && "opacity-50 cursor-wait"
+        )}
       >
-        <Download className="w-4 h-4" />
+        <Download className={cn("w-4 h-4", !isReady && "animate-pulse")} />
         <span>Install App</span>
       </SidebarMenuButton>
     </SidebarMenuItem>
