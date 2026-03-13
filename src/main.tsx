@@ -20,7 +20,7 @@ startNetworkListener();
 
 // Initial sync: pull cloud data into local DB on startup
 // This runs silently in background – app works even if it fails (offline)
-if (navigator.onLine) {
+if (navigator.onLine && localStorage.getItem('token')) {
     pullAllData().catch(() => {
         console.log("[Sync] Initial pull failed, will use cached local data.");
     });
