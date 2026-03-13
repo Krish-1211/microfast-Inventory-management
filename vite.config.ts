@@ -53,7 +53,7 @@ export default defineConfig(({ mode }) => ({
         // Cache all app assets
         globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2,woff,ttf,webmanifest}"],
         cleanupOutdatedCaches: true,
-        navigateFallback: "index.html",
+        navigateFallback: "/index.html",
         navigateFallbackDenylist: [/^\/api/], // Don't fallback for API calls
         runtimeCaching: [
           {

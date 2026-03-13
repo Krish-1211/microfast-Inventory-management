@@ -12,6 +12,7 @@ const updateSW = registerSW({
     },
     onOfflineReady() {
         console.log("[PWA] App ready for offline use.");
+        import('sonner').then(m => m.toast.success("App works offline! You can use it anywhere."));
     },
 });
 
