@@ -1,44 +1,37 @@
 {
-    "version": 2,
-    "builds": [
+  "version": 2,
+  "builds": [
+    {
+      "src": "package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
+    },
+    {
+      "src": "backend/index.cjs",
+      "use": "@vercel/node"
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/api/(.*)",
+      "destination": "backend/index.cjs"
+    },
+    {
+      "source": "/((?!api|assets|sw.js|manifest.webmanifest|favicon|logo|icon|apple-touch-icon).*)",
+      "destination": "/index.html"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
         {
-            "src": "package.json",
-            "use": "@vercel/static-build",
-            "config": { "distDir": "dist" }
-        },
-        {
-            "src": "backend/index.cjs",
-            "use": "@vercel/node"
+          "key": "Service-Worker-Allowed",
+          "value": "/"
         }
-    ],
-    "rewrites": [
-        {
-            "source": "/api/(.*)",
-            "destination": "backend/index.cjs"
-        },
-        {
-            "source": "/(.*)",
-            "destination": "/index.html"
-        }
-    ],
-    "headers": [
-        {
-            "source": "/sw.js",
-            "headers": [
-                {
-                    "key": "Cache-Control",
-                    "value": "public, max-age=0, must-revalidate"
-                }
-            ]
-        },
-        {
-            "source": "/manifest.webmanifest",
-            "headers": [
-                {
-                    "key": "Cache-Control",
-                    "value": "public, max-age=0, must-revalidate"
-                }
-            ]
-        }
-    ]
+      ]
+    }
+  ]
 }
