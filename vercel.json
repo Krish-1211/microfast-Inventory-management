@@ -17,16 +17,8 @@
             "destination": "backend/index.cjs"
         },
         {
-            "source": "/sw.js",
-            "destination": "/sw.js"
-        },
-        {
-            "source": "/manifest.webmanifest",
-            "destination": "/manifest.webmanifest"
-        },
-        {
             "source": "/(.*)",
-            "destination": "/"
+            "destination": "/index.html"
         }
     ],
     "headers": [
@@ -35,11 +27,16 @@
             "headers": [
                 {
                     "key": "Cache-Control",
-                    "value": "no-cache"
-                },
+                    "value": "public, max-age=0, must-revalidate"
+                }
+            ]
+        },
+        {
+            "source": "/manifest.webmanifest",
+            "headers": [
                 {
-                    "key": "Service-Worker-Allowed",
-                    "value": "/"
+                    "key": "Cache-Control",
+                    "value": "public, max-age=0, must-revalidate"
                 }
             ]
         }

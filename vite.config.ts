@@ -51,8 +51,8 @@ export default defineConfig(({ mode }) => ({
       },
       workbox: {
         // Cache all app assets
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2,woff,ttf}"],
-        navigateFallback: "index.html",
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,woff2,woff,ttf,webmanifest}"],
+        cleanupOutdatedCaches: true,
         runtimeCaching: [
           {
             // Cache API responses for offline access
@@ -65,6 +65,18 @@ export default defineConfig(({ mode }) => ({
                 maxAgeSeconds: 60 * 60 * 24 * 7, // 7 days
               },
               networkTimeoutSeconds: 5,
+            },
+          },
+          {
+            // Cache images
+            urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+            handler: 'CacheFirst',
+            options: {
+              cacheName: 'image-cache',
+              expiration: {
+                maxEntries: 100,
+                maxAgeSeconds: 30 * 24 * 60 * 60, // 30 Days
+              },
             },
           },
         ],
