@@ -6,6 +6,8 @@ import { Label } from "@/components/ui/label";
 import { login, isAuthenticated } from "@/lib/auth";
 import { Loader2 } from "lucide-react";
 
+import { toast } from "sonner";
+
 const Login = () => {
     const navigate = useNavigate();
     
@@ -18,6 +20,7 @@ const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [isLoading, setIsLoading] = useState(false);
+    const [isSyncing, setIsSyncing] = useState(false);
     const [error, setError] = useState("");
 
     const handleLogin = async (e: React.FormEvent) => {
@@ -26,11 +29,22 @@ const Login = () => {
         setError("");
         try {
             await login(email, password);
+            
+            // If we just logged in online, show a "Preparing offline" state
+            if (navigator.onLine) {
+                setIsSyncing(true);
+                toast.info("Preparing for offline use... Downloading database.");
+                const { pullAllData } = await import("@/lib/syncEngine");
+                await pullAllData();
+                toast.success("Ready for offline use!");
+            }
+            
             navigate("/dashboard");
         } catch (err: any) {
-            setError("Invalid email or password");
+            setError(err.message || "Invalid email or password");
         } finally {
             setIsLoading(false);
+            setIsSyncing(false);
         }
     };
 

@@ -19,11 +19,14 @@ const updateSW = registerSW({
 startNetworkListener();
 
 // Initial sync: pull cloud data into local DB on startup
-// This runs silently in background – app works even if it fails (offline)
-if (navigator.onLine && localStorage.getItem('token')) {
-    pullAllData().catch(() => {
-        console.log("[Sync] Initial pull failed, will use cached local data.");
-    });
+if (navigator.onLine) {
+    // If logged in, do a full sync. If not, at least pull public products.
+    if (localStorage.getItem('token')) {
+        syncNow(true).catch(() => console.log("[Sync] Full initial sync failed."));
+    } else {
+        // Just pull products so the storefront works offline even if they never logged in
+        import('./lib/syncEngine').then(m => m.pullAllData()); 
+    }
 }
 
 createRoot(document.getElementById("root")!).render(<App />);
