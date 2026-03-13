@@ -21,6 +21,9 @@ export const login = async (email: string, password: string) => {
         localStorage.setItem('user', JSON.stringify(response.data));
         // Save for offline login
         localStorage.setItem('offline_creds', `${email}|${password}`);
+        
+        // Push this into background so we don't block the UI transition
+        import('./syncEngine').then(m => m.syncNow(true));
     }
     return response.data;
 };
@@ -29,7 +32,7 @@ export const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
     // We keep offline_creds so they can log back in while offline
-    window.location.reload();
+    window.location.href = '/login';
 };
 
 export const isAuthenticated = () => {

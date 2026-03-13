@@ -21,9 +21,9 @@ const Orders: React.FC = () => {
 
     const filtered = orders.filter((order: any) => {
         const matchSearch =
-            order.invoiceNumber.toLowerCase().includes(search.toLowerCase()) ||
-            order.clientName.toLowerCase().includes(search.toLowerCase());
-        const matchStatus = filterStatus === "All" || order.status.toLowerCase() === filterStatus.toLowerCase();
+            (order.invoiceNumber || "").toLowerCase().includes(search.toLowerCase()) ||
+            (order.clientName || "").toLowerCase().includes(search.toLowerCase());
+        const matchStatus = filterStatus === "All" || (order.status || "").toLowerCase() === filterStatus.toLowerCase();
         return matchSearch && matchStatus;
     });
 
