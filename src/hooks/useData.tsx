@@ -35,8 +35,8 @@ export const fetchClientById = async (id: string) => {
 
 export const useProducts = () => {
     const products = useLiveQuery(() => db.products.orderBy('name').toArray(), []);
-    return { 
-        data: products || [], 
+    return {
+        data: products || [],
         isLoading: products === undefined,
         isSuccess: products !== undefined
     };
@@ -48,9 +48,9 @@ export const useCreateProduct = () => {
         mutate: async (productData: any) => {
             const id = newId();
             const now = Date.now();
-            const dataWithId = { 
-                ...productData, 
-                id, 
+            const dataWithId = {
+                ...productData,
+                id,
                 created_at: new Date().toISOString(),
                 _sync: isOnline() ? 'synced' : 'pending_create',
                 _local_updated_at: now
@@ -153,8 +153,8 @@ export const useProductRecommendations = (productId: string | null, limit: numbe
 
 export const useClients = () => {
     const clients = useLiveQuery(() => db.clients.orderBy('name').toArray(), []);
-    return { 
-        data: clients || [], 
+    return {
+        data: clients || [],
         isLoading: clients === undefined,
         isSuccess: clients !== undefined
     };
@@ -251,7 +251,7 @@ export const useClientInvoices = (clientId: string | null) => {
 
 export const useInvoices = () => {
     const invoices = useLiveQuery(() => db.invoices.orderBy('created_at').reverse().toArray(), []);
-    return { 
+    return {
         data: (invoices || []).map(inv => ({
             id: inv.id,
             invoiceNumber: inv.invoice_number,
@@ -262,8 +262,8 @@ export const useInvoices = () => {
             amount: inv.total_amount,
             status: inv.status,
             _sync: inv._sync
-        })), 
-        isLoading: invoices === undefined 
+        })),
+        isLoading: invoices === undefined
     };
 };
 
@@ -273,7 +273,7 @@ export const useCreateInvoice = () => {
         mutate: async (invoiceData: any) => {
             const id = newId();
             const now = Date.now();
-            
+
             // Extract items if any (though usually passed as part of invoiceData)
             const { items, ...header } = invoiceData;
 
@@ -352,9 +352,9 @@ export const useInvoice = (id: string | null) => {
     const invoice = useLiveQuery(() => id ? db.invoices.get(id) : null, [id]);
     const items = useLiveQuery(() => id ? db.invoiceItems.where('invoice_id').equals(id).toArray() : [], [id]);
 
-    return { 
-        data: invoice ? { ...invoice, items } : null, 
-        isLoading: invoice === undefined 
+    return {
+        data: invoice ? { ...invoice, items } : null,
+        isLoading: invoice === undefined
     };
 };
 

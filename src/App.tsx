@@ -21,44 +21,47 @@ import ProformaInvoice from "./pages/ProformaInvoice";
 import DeliveryNote from "./pages/DeliveryNote";
 import PurchaseOrder from "./pages/PurchaseOrder";
 import { Navigate } from "react-router-dom";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const queryClient = new QueryClient();
 
 const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            {/* Public exact paths */}
-            <Route path="/login" element={<Login />} />
+      <ErrorBoundary>
+        <TooltipProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              {/* Public exact paths */}
+              <Route path="/login" element={<Login />} />
 
-            {/* Admin routes using Layout wrapper as parent */}
-            <Route element={<AppLayout />}>
-              <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/products" element={<Products />} />
-              <Route path="/clients" element={<Clients />} />
-              <Route path="/orders" element={<Orders />} />
-              <Route path="/invoices" element={<InvoiceHistory />} />
-              <Route path="/invoices/:id" element={<InvoiceDetails />} />
-              <Route path="/invoices/:id/edit" element={<InvoiceGenerator />} />
-              <Route path="/invoices/new" element={<InvoiceGenerator />} />
-              <Route path="/job-card" element={<JobCard />} />
-              <Route path="/proforma-invoice" element={<ProformaInvoice />} />
-              <Route path="/delivery-note" element={<DeliveryNote />} />
-              <Route path="/purchase-order" element={<PurchaseOrder />} />
-            </Route>
+              {/* Admin routes using Layout wrapper as parent */}
+              <Route element={<AppLayout />}>
+                <Route path="/dashboard" element={<Dashboard />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/clients" element={<Clients />} />
+                <Route path="/orders" element={<Orders />} />
+                <Route path="/invoices" element={<InvoiceHistory />} />
+                <Route path="/invoices/:id" element={<InvoiceDetails />} />
+                <Route path="/invoices/:id/edit" element={<InvoiceGenerator />} />
+                <Route path="/invoices/new" element={<InvoiceGenerator />} />
+                <Route path="/job-card" element={<JobCard />} />
+                <Route path="/proforma-invoice" element={<ProformaInvoice />} />
+                <Route path="/delivery-note" element={<DeliveryNote />} />
+                <Route path="/purchase-order" element={<PurchaseOrder />} />
+              </Route>
 
-            {/* Home / Landing page */}
-            <Route path="/" element={<PublicStore />} />
+              {/* Home / Landing page */}
+              <Route path="/" element={<PublicStore />} />
 
-            {/* Wildcard fallback LAST */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </TooltipProvider>
+              {/* Wildcard fallback LAST */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </TooltipProvider>
+      </ErrorBoundary>
     </QueryClientProvider>
   );
 };

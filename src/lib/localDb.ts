@@ -79,10 +79,10 @@ class MicrofastDB extends Dexie {
 
     constructor() {
         super('MicrofastOfflineDB');
-        this.version(1).stores({
-            clients: 'id, email, status, _sync',
-            products: 'id, name, category, status, _sync',
-            invoices: 'id, invoice_number, client_id, status, _sync',
+        this.version(2).stores({
+            clients: 'id, name, email, status, _sync, created_at',
+            products: 'id, name, category, status, _sync, created_at',
+            invoices: 'id, invoice_number, client_id, status, _sync, created_at',
             invoiceItems: 'id, invoice_id, product_id, _sync',
             pendingRequests: '++id, method, url, entity_type, entity_id, created_at',
         });
